@@ -410,6 +410,7 @@ class Machine(Node, metaclass=MachineType):
         self,
         *,
         enable_ssh: bool = None,
+        skip_bmc_config: bool = None,
         skip_networking: bool = None,
         skip_storage: bool = None,
         commissioning_scripts: typing.Sequence[str] = None,
@@ -422,6 +423,8 @@ class Machine(Node, metaclass=MachineType):
         :param enable_ssh: Prevent the machine from powering off after running
             commissioning scripts and enable your user to SSH into the machine.
         :type enable_ssh: `bool`
+        :param skip_bmc_config: Skip configuring the BMC (Baseboard Management
+            Controller) during commissioning.
         :param skip_networking: Skip updating the MAAS interfaces for the
             machine.
         :type skip_networking: `bool`
@@ -444,6 +447,8 @@ class Machine(Node, metaclass=MachineType):
         params = {"system_id": self.system_id}
         if enable_ssh is not None:
             params["enable_ssh"] = enable_ssh
+        if skip_bmc_config is not None:
+            params["skip_bmc_config"] = skip_bmc_config
         if skip_networking is not None:
             params["skip_networking"] = skip_networking
         if skip_storage is not None:
