@@ -249,8 +249,14 @@ async def authenticate_with_macaroon(url, insecure=False):
         result = resp.json()
         return "{consumer_key}:{token_key}:{token_secret}".format(**result)
 
-    loop = asyncio.get_event_loop()
-    return await loop.run_in_executor(executor, get_token)
+    try:
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(executor, get_token)
+    finally:
+        try:
+            executor.shutdown(wait=True)
+        except Exception:
+            pass
 
 
 async def authenticate(url, username, password, *, insecure=False):
