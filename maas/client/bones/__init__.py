@@ -460,7 +460,9 @@ class CallAPI:
         library.
         """
         insecure = self.action.handler.session.insecure
-        connector = aiohttp.TCPConnector(verify_ssl=(not insecure))
+        connector = aiohttp.TCPConnector(
+                verify_ssl=(not insecure),
+                resolver=aiohttp.ThreadedResolver())
         session = aiohttp.ClientSession(connector=connector)
         async with session:
             response = await session.request(
